@@ -8,13 +8,15 @@ import {
     View,
     Text,
     Keyboard,
-    ImageBackground
+    TextInput,
+    TouchableOpacity,
+    Image
 } from 'react-native';
 import PropTypes from 'prop-types';
 import GeneralStyles from '../styles/GeneralStyles';
 import { AuthContext } from '../components/GlobalContextComponent';
 import LinearGradient from 'react-native-linear-gradient';
-import { RED_PRINCIPAL } from '../utilities/GlobalConstantsUtilities';
+import { ACTIVE_OPACITY, RED_PRINCIPAL } from '../utilities/GlobalConstantsUtilities';
 import Styles from '../styles/LoginStyle';
 
 /**
@@ -26,7 +28,8 @@ import Styles from '../styles/LoginStyle';
 const LoginScreen = ({ navigation }) => {
 
     // CONSTANTES Y HOOKS
-
+    const [emailInputValue, setEmailInputValue] = useState('');
+    const [passwordInputValue, setPasswordInputValue] = useState('');
 
     // CONTEXT PARA MANEJO DE SESION DEL USUARIO
     const { signInContext } = useContext(AuthContext);
@@ -56,7 +59,68 @@ const LoginScreen = ({ navigation }) => {
     // SE RENDERIZAN ELEMENTOS VISUALES
     return (
         <View style={GeneralStyles.mainContainer}>
-            <View style={Styles.subMainContainer}></View>
+            <View style={Styles.actionsContainer}>
+                <View style={Styles.logoLoginContainer}>
+                    <Image
+                        source={require('../resources/logos/logo-multiplica.png')}
+                        style={Styles.logoLoginMultiplicaSize}
+                        resizeMode={'cover'}
+                    />
+                </View>
+                <Text style={Styles.loginLabelText}>Inicio de sesión</Text>
+                <Text style={Styles.redDivider}>__________________________________</Text>
+                <View style={Styles.formContainer}>
+                    <Text style={Styles.formLabelText}>Correo electrónico</Text>
+                    <TextInput
+                        style={Styles.textInput}
+                        placeholderTextColor={'grey'}
+                        placeholder={'Ingresa tu correo electrónico'}
+                        value={emailInputValue}
+                        autoCapitalize={'words'}
+                        multiline={false}
+                        maxLength={100}
+                        textContentType={'name'}
+                        keyboardType={'default'}
+                        returnKeyType={'next'}
+                        onChangeText={(formatted) => {
+                            console.log('EMAIL: ', formatted);
+                            setEmailInputValue(formatted);
+                        }}
+                    />
+                    <Text style={Styles.formLabelText}>Contraseña</Text>
+                    <TextInput
+                        style={Styles.textInput}
+                        placeholderTextColor={'grey'}
+                        placeholder={'Ingresa tu contraseña'}
+                        value={passwordInputValue}
+                        autoCapitalize={'words'}
+                        multiline={false}
+                        maxLength={100}
+                        textContentType={'name'}
+                        keyboardType={'default'}
+                        returnKeyType={'next'}
+                        onChangeText={(formatted) => {
+                            console.log('PASSWORD: ', formatted);
+                            setPasswordInputValue(formatted);
+                        }}
+                    />
+                    <TouchableOpacity
+                        style={[Styles.buttonStyle, Styles.centered]}
+                        onPress={() => { console.log('Login function called'); }}
+                        activeOpacity={ACTIVE_OPACITY}
+                    >
+                        <Text style={Styles.buttonTextStyle}>CONTINUAR</Text>
+                    </TouchableOpacity>
+                    <Text style={Styles.redDivider}>__________________________________</Text>
+                    <Text style={Styles.alreadyAccountTextStyle}>¿Ya tienes una cuenta?</Text>
+                    <TouchableOpacity
+                        onPress={() => { navigation.navigate('Register') }}
+                        activeOpacity={ACTIVE_OPACITY}
+                    >
+                        <Text style={Styles.goToRegisterTextStyle}>Regístrate</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
         </View>
     );
 }

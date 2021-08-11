@@ -14,22 +14,13 @@ import {
     RED_PRINCIPAL,
     PURE_WHITE,
     GENERAL_BORDER_RADIUS,
-    BLACK_TEXT
+    BLACK_TEXT,
+    GREY_TEXT,
+    GREY_BUTTONS
 } from "../utilities/GlobalConstantsUtilities";
 
 export default {
-    backgroundLinearGradientContainer: {
-        height: sdh(25),
-        width: sdw(100),
-        backgroundColor: TRANSPARENT
-    },
-    subMainContainer: {
-        flex: 1,
-        width: sdw(100),
-        backgroundColor: PURE_WHITE,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
+    // MAIN SCREEN
     logoContainer: {
         height: sdh(20),
         width: sdw(100),
@@ -38,19 +29,8 @@ export default {
         alignItems: 'center'
     },
     logoMultiplicaSize: {
-        height: sdh(28),
+        height: sdh(20),
         width: sdw(100),
-    },
-    actionsContainer: {
-        height: sdh(65),
-        width: sdw(100),
-        backgroundColor: RED_PRINCIPAL,
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderTopRightRadius: 70,
-        borderTopLeftRadius: 70,
-        borderBottomRightRadius: 70,
-        borderBottomLeftRadius: 70
     },
     buttonsContainer: {
         height: sdh(30),
@@ -72,15 +52,78 @@ export default {
         fontSize: sdfz(2.5),
         color: PURE_WHITE
     },
-    versionInfoContainer: {
-        height: sdh(20),
+    // LOGIN SCREEN
+    actionsContainer: {
+        flex: 1,
         width: sdw(100),
-        backgroundColor: 'orange',
+        backgroundColor: TRANSPARENT,
+        paddingHorizontal: sdw(5),
+        paddingVertical: sdh(10)
+    },
+    logoLoginContainer: {
+        height: sdh(10),
+        width: sdw(80),
+        backgroundColor: TRANSPARENT,
+        alignSelf: 'center',
         justifyContent: 'center',
         alignItems: 'center'
     },
-    versionTextStyle: {
+    logoLoginMultiplicaSize: {
+        height: sdh(10),
+        width: sdw(50),
+    },
+    loginLabelText: {
+        fontSize: sdfz(3),
+        fontWeight: 'bold',
+        color: GREY_TEXT,
+        alignSelf: 'center'
+    },
+    redDivider: {
+        fontSize: sdfz(2),
+        fontWeight: 'bold',
+        color: RED_PRINCIPAL,
+        alignSelf: 'center'
+    },
+    formContainer: {
+        height: sdh(40),
+        width: sdw(90),
+        backgroundColor: TRANSPARENT,
+        marginTop: sdh(5)
+    },
+    formLabelText: {
+        fontSize: sdfz(2),
+        fontWeight: '500',
+        color: GREY_TEXT
+    },
+    textInput: {
+        width: sdw(90),
+        height: sdh(6),
+        backgroundColor: GREY_BUTTONS,
+        justifyContent: 'center',
+        alignItems: 'flex-start',
+        color: GREY_TEXT,
         fontSize: sdfz(1.5),
-        color: BLACK_TEXT
+        marginTop: sdh(1),
+        marginBottom: sdh(2.5),
+        borderColor: GREY_BUTTONS,
+        borderRadius: GENERAL_BORDER_RADIUS,
+        borderWidth: 1,
+        paddingHorizontal: sdw(2.5)
+    },
+    centered: {
+        alignSelf: 'center'
+    },
+    alreadyAccountTextStyle: {
+        fontSize: sdfz(2),
+        fontWeight: '400',
+        color: GREY_TEXT,
+        marginTop: sdh(2.5),
+        alignSelf: 'center'
+    },
+    goToRegisterTextStyle: {
+        fontSize: sdfz(2.2),
+        fontWeight: '600',
+        color: RED_PRINCIPAL,
+        alignSelf: 'center'
     }
 };

@@ -57,32 +57,28 @@ const RegisterScreen = ({ navigation }) => {
     // SE RENDERIZAN ELEMENTOS VISUALES
     return (
         <View style={GeneralStyles.mainContainer}>
-            <View style={Styles.subMainContainer}>
-                <View style={Styles.logoContainer}>
-                    <Image
-                        source={require('../resources/logos/logo-multiplica.png')}
-                        style={Styles.logoMultiplicaSize}
-                        resizeMode={'contain'}
-                    />
-                </View>
-                {/* <View style={Styles.actionsContainer}> */}
-                <View style={Styles.buttonsContainer}>
-                    <TouchableOpacity
-                        style={Styles.buttonStyle}
-                        onPress={() => { console.log('REGISTER PRESSED'); }}
-                        activeOpacity={ACTIVE_OPACITY}
-                    >
-                        <Text style={Styles.buttonTextStyle}>REGÍSTRATE</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={Styles.buttonStyle}
-                        onPress={() => { console.log('LOGIN PRESSED'); }}
-                        activeOpacity={ACTIVE_OPACITY}
-                    >
-                        <Text style={Styles.buttonTextStyle}>INICIA SESIÓN</Text>
-                    </TouchableOpacity>
-                </View>
-                {/* </View> */}
+            <View style={Styles.logoContainer}>
+                <Image
+                    source={require('../resources/logos/logo-multiplica.png')}
+                    style={Styles.logoMultiplicaSize}
+                    resizeMode={'contain'}
+                />
+            </View>
+            <View style={Styles.buttonsContainer}>
+                <TouchableOpacity
+                    style={Styles.buttonStyle}
+                    onPress={() => { console.log('REGISTER PRESSED'); }}
+                    activeOpacity={ACTIVE_OPACITY}
+                >
+                    <Text style={Styles.buttonTextStyle}>REGÍSTRATE</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style={Styles.buttonStyle}
+                    onPress={() => { navigation.navigate('Login') }}
+                    activeOpacity={ACTIVE_OPACITY}
+                >
+                    <Text style={Styles.buttonTextStyle}>INICIA SESIÓN</Text>
+                </TouchableOpacity>
             </View>
         </View >
     );
