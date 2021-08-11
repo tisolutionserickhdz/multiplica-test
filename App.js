@@ -12,7 +12,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import LoaderIndicatorComponent from './src/mx/multiplica/multiplica_app/components/LoaderIndicatorComponent';
 import UnsignedUserNavigation from './src/mx/multiplica/multiplica_app/navigations/UnsignedUserNavigation';
 import DrawerNavigation from './src/mx/multiplica/multiplica_app/navigations/DrawerNavigation';
-import { BACKGROUND_BLUE } from './src/mx/multiplica/multiplica_app/utilities/GlobalConstantsUtilities';
+import { RED_PRINCIPAL } from './src/mx/multiplica/multiplica_app/utilities/GlobalConstantsUtilities';
 import StatusBarComponent from './src/mx/multiplica/multiplica_app/components/StatusBarComponent';
 
 /**
@@ -129,7 +129,7 @@ const App = () => {
       <AuthContext.Provider value={authContext}>
         <NavigationContainer>
           <StatusBarComponent
-            backgroundColor={BACKGROUND_BLUE}
+            backgroundColor={RED_PRINCIPAL}
             translucent={true}
             statusBarFontStyle={'light-content'}
             hidden={false}
@@ -143,15 +143,7 @@ const App = () => {
         </NavigationContainer>
       </AuthContext.Provider>
     );
-
   }
-
-  // return (
-  //   <View style={GeneralStyles.mainContainer}>
-  //     <Text>Hola mundo</Text>
-  //   </View>
-  // );
-
 };
 
 // SE EXPORTA CONSTANTE DE ARCHIVO

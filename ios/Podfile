@@ -27,6 +27,7 @@ target 'multiplicatesterick' do
   pod 'Firebase/Analytics'
   # or pod ‘Firebase/AnalyticsWithoutAdIdSupport’
   # for Analytics without IDFA collection capability
+  pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
 
   # add pods for any other desired Firebase products
   # https://firebase.google.com/docs/ios/setup#available-pods

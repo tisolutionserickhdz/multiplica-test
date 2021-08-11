@@ -37,16 +37,16 @@ const unsignedUserNavigation = () => {
     // SE RENDERIZAN ELEMENTOS VISUALES
     return (
         <STACK.Navigator
-            initialRouteName={'Login'}
+            initialRouteName={'Register'}
             screenOptions={{
                 ...NAVIGATION_OPTIONS,
-                title: 'Login',
+                title: 'Register',
             }}>
             <STACK.Screen
                 name='Register'
                 component={RegisterScreen}
                 options={{
-                    title: 'SignUp',
+                    title: 'Register',
                     headerShown: false,
                 }}
             />

@@ -7,7 +7,7 @@
  import { View } from 'react-native';
  import GeneralStyles from '../styles/GeneralStyles';
  import { NineCubesLoader } from 'react-native-indicator';
- import { BLUE_TEXT } from '../utilities/GlobalConstantsUtilities';
+ import { RED_PRINCIPAL } from '../utilities/GlobalConstantsUtilities';
  
  /**
   * @description Constante principal de LoaderIndicatorComponent
@@ -21,7 +21,7 @@
      return (
          <View style={GeneralStyles.indicatorContainer}>
              <NineCubesLoader
-                 color={BLUE_TEXT}
+                 color={RED_PRINCIPAL}
                  size={50} />
          </View>
      );
