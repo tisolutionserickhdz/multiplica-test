@@ -10,7 +10,8 @@ import {
     Keyboard,
     TextInput,
     TouchableOpacity,
-    Image
+    Image,
+    ScrollView
 } from 'react-native';
 import PropTypes from 'prop-types';
 import GeneralStyles from '../styles/GeneralStyles';
@@ -56,70 +57,90 @@ const LoginScreen = ({ navigation }) => {
         console.log('ENTRA A recoveryPasswordFunction');
     }
 
+    /**
+     * @description Funcion para limpiar inputs de registro
+     * @author Erick Hernandez <ti.solutions.erick.hdz@gmail.com>
+     * @version 1.0 - 08/08/2021
+     */
+    const cleanUpAllInputs = () => {
+        // INPUTS
+        setEmailInputValue('');
+        setPasswordInputValue('');
+    }
+
     // SE RENDERIZAN ELEMENTOS VISUALES
     return (
         <View style={GeneralStyles.mainContainer}>
             <View style={Styles.actionsContainer}>
-                <View style={Styles.logoLoginContainer}>
-                    <Image
-                        source={require('../resources/logos/logo-multiplica.png')}
-                        style={Styles.logoLoginMultiplicaSize}
-                        resizeMode={'cover'}
-                    />
-                </View>
-                <Text style={Styles.loginLabelText}>Inicio de sesión</Text>
-                <Text style={Styles.redDivider}>__________________________________</Text>
-                <View style={Styles.formContainer}>
-                    <Text style={Styles.formLabelText}>Correo electrónico</Text>
-                    <TextInput
-                        style={Styles.textInput}
-                        placeholderTextColor={'grey'}
-                        placeholder={'Ingresa tu correo electrónico'}
-                        value={emailInputValue}
-                        autoCapitalize={'words'}
-                        multiline={false}
-                        maxLength={100}
-                        textContentType={'name'}
-                        keyboardType={'default'}
-                        returnKeyType={'next'}
-                        onChangeText={(formatted) => {
-                            console.log('EMAIL: ', formatted);
-                            setEmailInputValue(formatted);
-                        }}
-                    />
-                    <Text style={Styles.formLabelText}>Contraseña</Text>
-                    <TextInput
-                        style={Styles.textInput}
-                        placeholderTextColor={'grey'}
-                        placeholder={'Ingresa tu contraseña'}
-                        value={passwordInputValue}
-                        autoCapitalize={'words'}
-                        multiline={false}
-                        maxLength={100}
-                        textContentType={'name'}
-                        keyboardType={'default'}
-                        returnKeyType={'next'}
-                        onChangeText={(formatted) => {
-                            console.log('PASSWORD: ', formatted);
-                            setPasswordInputValue(formatted);
-                        }}
-                    />
-                    <TouchableOpacity
-                        style={[Styles.buttonStyle, Styles.centered]}
-                        onPress={() => { console.log('Login function called'); }}
-                        activeOpacity={ACTIVE_OPACITY}
-                    >
-                        <Text style={Styles.buttonTextStyle}>CONTINUAR</Text>
-                    </TouchableOpacity>
+                <ScrollView
+                    bounces={false}
+                    style={Styles.flexOne}
+                >
+                    <View style={Styles.logoLoginContainer}>
+                        <Image
+                            source={require('../resources/logos/logo-multiplica.png')}
+                            style={Styles.logoLoginMultiplicaSize}
+                            resizeMode={'cover'}
+                        />
+                    </View>
+                    <Text style={Styles.loginLabelText}>Inicio de sesión</Text>
                     <Text style={Styles.redDivider}>__________________________________</Text>
-                    <Text style={Styles.alreadyAccountTextStyle}>¿Ya tienes una cuenta?</Text>
-                    <TouchableOpacity
-                        onPress={() => { navigation.navigate('Register') }}
-                        activeOpacity={ACTIVE_OPACITY}
-                    >
-                        <Text style={Styles.goToRegisterTextStyle}>Regístrate</Text>
-                    </TouchableOpacity>
-                </View>
+                    <View style={Styles.formContainer}>
+                        <Text style={Styles.formLabelText}>Correo electrónico</Text>
+                        <TextInput
+                            style={Styles.textInput}
+                            placeholderTextColor={'grey'}
+                            placeholder={'Ingresa tu correo electrónico'}
+                            value={emailInputValue}
+                            autoCapitalize={'words'}
+                            multiline={false}
+                            maxLength={100}
+                            textContentType={'emailAddress'}
+                            keyboardType={'email-address'}
+                            returnKeyType={'next'}
+                            onChangeText={(formatted) => {
+                                console.log('EMAIL: ', formatted);
+                                setEmailInputValue(formatted);
+                            }}
+                        />
+                        <Text style={Styles.formLabelText}>Contraseña</Text>
+                        <TextInput
+                            style={Styles.textInput}
+                            placeholderTextColor={'grey'}
+                            placeholder={'Ingresa tu contraseña'}
+                            value={passwordInputValue}
+                            autoCapitalize={'words'}
+                            multiline={false}
+                            maxLength={100}
+                            textContentType={'password'}
+                            keyboardType={'default'}
+                            secureTextEntry={true}
+                            returnKeyType={'next'}
+                            onChangeText={(formatted) => {
+                                console.log('PASSWORD: ', formatted);
+                                setPasswordInputValue(formatted);
+                            }}
+                        />
+                        <TouchableOpacity
+                            style={[Styles.buttonStyle, Styles.centered]}
+                            onPress={() => { console.log('Login function called'); }}
+                            activeOpacity={ACTIVE_OPACITY}
+                        >
+                            <Text style={Styles.buttonTextStyle}>CONTINUAR</Text>
+                        </TouchableOpacity>
+                        <Text style={Styles.redDivider}>__________________________________</Text>
+                        <Text style={Styles.alreadyAccountTextStyle}>¿Aún no tienes una cuenta?</Text>
+                        <TouchableOpacity
+                            onPress={() => {
+                                navigation.navigate('Register');
+                                cleanUpAllInputs();
+                            }}
+                            activeOpacity={ACTIVE_OPACITY}
+                        >
+                            <Text style={Styles.goToRegisterTextStyle}>Regístrate</Text>
+                        </TouchableOpacity>
+                    </View>
+                </ScrollView>
             </View>
         </View>
     );

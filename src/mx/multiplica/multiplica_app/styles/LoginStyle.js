@@ -46,7 +46,7 @@ export default {
         borderRadius: GENERAL_BORDER_RADIUS,
         justifyContent: 'center',
         alignItems: 'center',
-        marginBottom: sdh(2)
+        marginTop: sdh(1)
     },
     buttonTextStyle: {
         fontSize: sdfz(2.5),
@@ -57,8 +57,7 @@ export default {
         flex: 1,
         width: sdw(100),
         backgroundColor: TRANSPARENT,
-        paddingHorizontal: sdw(5),
-        paddingVertical: sdh(10)
+        paddingHorizontal: sdw(5)
     },
     logoLoginContainer: {
         height: sdh(10),
@@ -85,10 +84,10 @@ export default {
         alignSelf: 'center'
     },
     formContainer: {
-        height: sdh(40),
+        // height: sdh(40),
         width: sdw(90),
         backgroundColor: TRANSPARENT,
-        marginTop: sdh(5)
+        marginTop: sdh(2.5)
     },
     formLabelText: {
         fontSize: sdfz(2),
@@ -104,7 +103,7 @@ export default {
         color: GREY_TEXT,
         fontSize: sdfz(1.5),
         marginTop: sdh(1),
-        marginBottom: sdh(2.5),
+        marginBottom: sdh(1),
         borderColor: GREY_BUTTONS,
         borderRadius: GENERAL_BORDER_RADIUS,
         borderWidth: 1,
@@ -125,5 +124,11 @@ export default {
         fontWeight: '600',
         color: RED_PRINCIPAL,
         alignSelf: 'center'
-    }
+    },
+    flexGrowOne: {
+        flexGrow: 1
+    },
+    flexOne: {
+        flex: 1
+    },
 };
