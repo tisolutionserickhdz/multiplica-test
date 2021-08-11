@@ -1,112 +1,158 @@
 /**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
+ * @description Clase principal de App que invoca las navegaciones y deriva todo el flujo
+ * @author Erick Hernandez <ti.solutions.erick.hdz@gmail.com>
+ * @version 1.0 - 08/08/2021
  */
+import React, { useState, useEffect, useMemo, useReducer } from 'react';
+import { View, LogBox, Alert, Platform, Text } from 'react-native';
+import GeneralStyles from './src/mx/multiplica/multiplica_app/styles/GeneralStyles';
+import { AuthContext } from './src/mx/multiplica/multiplica_app/components/GlobalContextComponent';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { NavigationContainer } from '@react-navigation/native';
+import LoaderIndicatorComponent from './src/mx/multiplica/multiplica_app/components/LoaderIndicatorComponent';
+import UnsignedUserNavigation from './src/mx/multiplica/multiplica_app/navigations/UnsignedUserNavigation';
+import DrawerNavigation from './src/mx/multiplica/multiplica_app/navigations/DrawerNavigation';
+import { BACKGROUND_BLUE } from './src/mx/multiplica/multiplica_app/utilities/GlobalConstantsUtilities';
+import StatusBarComponent from './src/mx/multiplica/multiplica_app/components/StatusBarComponent';
 
-import React from 'react';
-import type {Node} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+/**
+ * @description Constante principal de archivo App
+ * @author Erick Hernandez <ti.solutions.erick.hdz@gmail.com>
+ * @version 1.0 - 08/08/2021
+ * @return {*} Renderiza componentes
+ */
+const App = () => {
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+  // HOOKS
+  const [loadingApp, setLoadingApp] = useState(true);
+  const [tokenStored, setTokenStored] = useState('');
 
-const Section = ({children, title}): Node => {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
+  // INICIALIZACION DE ESTADO DE VALORES PARA CONTEXT
+  const initialLoginState = {
+    userId: null,
+    userToken: null,
+    userEmail: null,
+    userPassword: null
+  }
+
+  // REDUCER PARA MANEJAR ACTIVACION DE ESTADO DEPENDIENDO VALORES PREDETERMINADOS
+  const loginReducer = (prevState, action) => {
+    switch (action.type) {
+      case 'RETRIEVE_TOKEN':
+        return {
+          ...prevState,
+          userToken: action.token
+        };
+      case 'LOGIN':
+        return {
+          ...prevState,
+          userId: action.id,
+          userToken: action.token,
+          userName: action.email,
+          userPassword: action.password
+        };
+      case 'LOGOUT':
+        return {
+          ...prevState,
+          userId: null,
+          userToken: null
+        };
+      case 'REGISTER':
+        return {
+          ...prevState,
+          userId: action.id,
+          userToken: action.token
+        };
+    }
+  }
+
+  // DECLARACION DE DISPATCHER PARA CAMBIAR VALOR DE ESTADO
+  const [loginState, dispatch] = useReducer(loginReducer, initialLoginState);
+
+  // CONTEXTO DE INICIO DE SESION, REGISTRO, RECUPERANDO TOKEN O SESION INICIADA
+  const authContext = useMemo(() => ({
+    signInContext: async (username, userpassword, accesstoken, userid) => {
+      setLoadingApp(true);
+      setTokenStored(accesstoken);
+      console.log('ENTRA A signInContext desde App.js');
+      console.log('userid: ', userid);
+      console.log('accesstoken: ', accesstoken);
+      console.log('username: ', username);
+      console.log('userpassword: ', userpassword);
+      if (accesstoken != undefined && accesstoken != null) {
+        await AsyncStorage.setItem('@userAuthTokenObject', accesstoken).then(() => {
+          console.log('GUARDADO DE OBJETO EXITOSO @userAuthTokenObject');
+          setLoadingApp(false);
+        }).catch(error => {
+          console.log('ERROR GUARDANDO OBJETO @userAuthTokenObject: ', error);
+        })
+      }
+      dispatch({ type: 'LOGIN', id: userid, token: accesstoken, email: username, password: userpassword });
+    },
+    signOutContext: async (accesstoken) => {
+      if (accesstoken != null) {
+        setTokenStored(accesstoken);
+        try {
+          // SE ELIMINA TODA LA INFO DE ASYNCSTORAGE
+          await AsyncStorage.multiRemove([
+            '@userAuthTokenObject',
+            '@loginInformationObject'
+          ]).then(() => {
+            console.log('INFO DE ASYNCSTORAGE ELIMINADA CORRECTAMENTE');
+          })
+        } catch (error) {
+          console.log("ERROR AL ELIMINAR LOS DATOS DEL ASYNCSTORAGE: ", error);
+        }
+
+        dispatch({ type: 'LOGOUT', id: null, token: null });
+      } else {
+        console.log('NO SE RECIBE ACCESS TOKEN');
+      }
+    }
+
+  }), []);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoadingApp(false);
+    }, 3000);
+  }, []);
+
+  if (loadingApp) {
+    return (
+      <View style={GeneralStyles.mainContainer}>
+        <LoaderIndicatorComponent />
+      </View>
+    );
+  } else {
+    return (
+      <AuthContext.Provider value={authContext}>
+        <NavigationContainer>
+          <StatusBarComponent
+            backgroundColor={BACKGROUND_BLUE}
+            translucent={true}
+            statusBarFontStyle={'light-content'}
+            hidden={false}
+          />
           {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
+            loginState.userToken == null ?
+              <UnsignedUserNavigation />
+              :
+              <DrawerNavigation />
+          }
+        </NavigationContainer>
+      </AuthContext.Provider>
+    );
+
+  }
+
+  // return (
+  //   <View style={GeneralStyles.mainContainer}>
+  //     <Text>Hola mundo</Text>
+  //   </View>
+  // );
+
 };
 
-const App: () => Node = () => {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.js</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
-};
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
-
+// SE EXPORTA CONSTANTE DE ARCHIVO
 export default App;
