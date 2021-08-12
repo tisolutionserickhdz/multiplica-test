@@ -14,6 +14,7 @@ import {
 import GeneralStyles from '../styles/GeneralStyles';
 import LoaderIndicatorComponent from './LoaderIndicatorComponent';
 import auth from '@react-native-firebase/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 /**
  * @description Constante principal de SideBarMenuComponent
@@ -29,16 +30,14 @@ const SideBarMenuComponent = ({ navigation }) => {
     const [capitalLetter, setCapitalLetter] = useState('MX');
 
     useEffect(() => {
-        const user = auth().currentUser;
-        const userDisplayName = JSON.stringify(user.displayName);
-        const userEmail = JSON.stringify(user.email);
-        console.log('USUARIO RECUPERADO EN SIDE BAR: ' + userEmail);
-        setCapitalLetter(userDisplayName.charAt(1));
-        setName(userDisplayName.replace(/['"]+/g, ''));
-        setEmail(userEmail.replace(/['"]+/g, ''));
-        if (userDisplayName) {
+        AsyncStorage.getItem('@userInfoSignedObject').then((res) => {
+            const parsedResponse = JSON.parse(res);
+            console.log('@userInfoSignedObject RECUPERADO EN SIDE BAR: ', parsedResponse);
+            setName(parsedResponse.displayName);
+            setEmail(parsedResponse.email);
+            setCapitalLetter(parsedResponse.displayName.charAt(0));
             setLoading(false);
-        }
+        });
     }, []);
 
     // SE RENDERIZAN ELEMENTOS VISUALES
@@ -87,9 +86,8 @@ const SideBarMenuComponent = ({ navigation }) => {
                             // NOTA: INVOCAR ESTA LLAMADA CUANDO SE CIERRE SESION EN FIREBASE
                             auth()
                                 .signOut()
-                                .then((res) => {
-                                    console.log('res de cerrar sesion: ', JSON.stringify(res));
-                                    // setLoading(true);
+                                .then(() => {
+                                    AsyncStorage.removeItem('@userInfoSignedObject').then(() => { console.log('@userInfoSignedObject REMOVIDO') })
                                 });
                         }}>
                             <Text style={GeneralStyles.logOutText}>Cerrar sesión</Text>

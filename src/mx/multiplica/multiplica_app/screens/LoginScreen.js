@@ -44,10 +44,8 @@ const LoginScreen = ({ navigation }) => {
         setLoading(true);
         auth()
             .signInWithEmailAndPassword(emailInputValue.trim(), passwordInputValue)
-            .then((res) => {
-                console.log('User signed in!');
+            .then(() => {
                 setLoading(false);
-                console.log('res: ' + res);
             })
             .catch(error => {
                 if (error.code === 'auth/user-not-found') {

@@ -20,6 +20,7 @@ import DrawerNavigation from './src/mx/multiplica/multiplica_app/navigations/Dra
 import { RED_PRINCIPAL } from './src/mx/multiplica/multiplica_app/utilities/GlobalConstantsUtilities';
 import StatusBarComponent from './src/mx/multiplica/multiplica_app/components/StatusBarComponent';
 import auth from '@react-native-firebase/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // IGNORA ALERTAS ESPECIFICAS
 LogBox.ignoreLogs([
@@ -48,13 +49,45 @@ const App = () => {
   const [user, setUser] = useState();
 
   /**
+  * @description Funcion que recupera informacion del usuario firmado
+  * @author Erick Hernandez <ti.solutions.erick.hdz@gmail.com>
+  * @version 1.0 - 08/08/2021
+  */
+  async function getUserInfoSigned(usuario) {
+    console.log('--- getUserInfoSigned ---');
+    try {
+      const usuarioActual = auth().currentUser;
+      if (usuarioActual) {
+        if (usuarioActual.uid != null && usuarioActual.uid != undefined) {
+          await AsyncStorage.setItem('@userInfoSignedObject', JSON.stringify(usuario)).then(() => { console.log('@userInfoSignedObject ALMACENADO DESDE APP.JS'); });
+          setUser(usuario);
+          if (initializing) setInitializing(false);
+        } else {
+          console.log("No se econtro un usuario");
+        }
+      }
+    } catch (error) {
+      console.log('ERROR EN TRYCATCH DE getUserInfoSigned: ', error);
+    }
+  }
+
+  /**
    * @description Funcion que se ejecuta existe un cambio en la autenticacion de firebase
    * @author Erick Hernandez <ti.solutions.erick.hdz@gmail.com>
    * @version 1.0 - 08/08/2021
    */
   async function onAuthStateChanged(usuario) {
-    setUser(usuario);
-    if (initializing) setInitializing(false);
+    console.log('--- onAuthStateChanged ---');
+
+    if (usuario != null) {
+      console.log('USUARIO EXISTE');
+      await getUserInfoSigned(usuario);
+    } else {
+      console.log('USUARIO NO EXISTE');
+      if (initializing) setInitializing(false);
+      setUser(usuario);
+    }
+
   }
 
   useEffect(() => {

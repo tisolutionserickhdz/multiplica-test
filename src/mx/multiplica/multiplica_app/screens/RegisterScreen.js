@@ -64,16 +64,13 @@ const RegisterScreen = ({ navigation }) => {
         setLoading(true);
         auth()
             .createUserWithEmailAndPassword(emailInputValue.trim(), passwordInputValue)
-            .then((res) => {
-                console.log('User account created & signed in!');
-                Alert.alert('Usuario registrado', 'Sesión iniciada');
-                setLoading(false);
-                console.log('RESPUESTA DE REGISTRO: ' + res);
-                const user = auth().currentUser;
+            .then(async (res) => {
                 const WHITE_SPACE = ' ';
-                return user.updateProfile({
+                res.user.updateProfile({
                     displayName: nameInputValue.trim() + WHITE_SPACE + lastNameInputValue.trim() + WHITE_SPACE + secondLastNameInputValue.trim()
                 })
+                console.log('User registered successfully!');
+                setLoading(false);
             })
             .catch(error => {
                 if (error.code === 'auth/email-already-in-use') {

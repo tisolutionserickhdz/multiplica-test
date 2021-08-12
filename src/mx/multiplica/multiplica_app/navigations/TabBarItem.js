@@ -20,7 +20,7 @@ import GeneralStyle from '../styles/GeneralStyles';
 
 const TabBarItem = ({ color, tab, onPress, icon }) => {
 
-    console.log('COLORRRRR:', color);
+    // console.log('COLOR:', color);
 
     return (
         <TouchableOpacity style={Styles.tabBarItem} onPress={onPress}>

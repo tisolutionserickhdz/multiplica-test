@@ -13,10 +13,10 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import GeneralStyles from '../styles/GeneralStyles';
-import auth from '@react-native-firebase/auth';
 import CustomHeaderComponent from '../components/CustomHeaderComponent';
 import LoaderIndicatorComponent from '../components/LoaderIndicatorComponent';
 import { ACTIVE_OPACITY, PRODUCTS_ARRAY } from '../utilities/GlobalConstantsUtilities';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 /**
  * @description Constante principal de ProductsScreen
@@ -34,15 +34,13 @@ const ProductsScreen = ({ navigation }) => {
     const [email, setEmail] = useState('usuario@example.com');
 
     useEffect(() => {
-        const user = auth().currentUser;
-        const userDisplayName = JSON.stringify(user.displayName);
-        const userEmail = JSON.stringify(user.email);
-        console.log('USUARIO RECUPERADO EN SIDE BAR: ' + userEmail);
-        setName(userDisplayName.replace(/['"]+/g, ''));
-        setEmail(userEmail.replace(/['"]+/g, ''));
-        if (userDisplayName) {
+        AsyncStorage.getItem('@userInfoSignedObject').then((res) => {
+            const parsedResponse = JSON.parse(res);
+            console.log('@userInfoSignedObject RECUPERADO EN PRODUCTS');
+            setName(parsedResponse.displayName);
+            setEmail(parsedResponse.email);
             setLoading(false);
-        }
+        });
     }, []);
 
     // SE RENDERIZAN ELEMENTOS VISUALES
