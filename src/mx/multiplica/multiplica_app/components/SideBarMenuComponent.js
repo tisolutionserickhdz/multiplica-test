@@ -3,7 +3,7 @@
  * @author Erick Hernandez <ti.solutions.erick.hdz@gmail.com>
  * @version 1.0 - 08/08/2021
  */
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
     View,
@@ -12,9 +12,8 @@ import {
     TouchableOpacity
 } from 'react-native';
 import GeneralStyles from '../styles/GeneralStyles';
-import { AuthContext } from '../components/GlobalContextComponent';
 import LoaderIndicatorComponent from './LoaderIndicatorComponent';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import auth from '@react-native-firebase/auth';
 
 /**
  * @description Constante principal de SideBarMenuComponent
@@ -25,27 +24,20 @@ const SideBarMenuComponent = ({ navigation }) => {
 
     // CONSTANTES Y HOOKS
     const [loading, setLoading] = useState(true);
-    const { signOutContext } = useContext(AuthContext);
-    const [userId, setUserId] = useState(1);
-    const [userToken, setUserToken] = useState(null);
+    const [name, setName] = useState('MX');
+    const [capitalLetter, setCapitalLetter] = useState('MX');
 
     useEffect(() => {
-
-        {
-            // VALIDACION DE TOKEN DE USUARIO
-            // console.log('ENTRA A RECUPERAR TOKEN DE USUARIO EN SIDEBAR');
-            try {
-                AsyncStorage.getItem('@userAuthTokenObject').then(response => {
-                    // console.log('OBJETO userAuthTokenObject RECUPERADO CON EXITO: ', response);
-                    setUserToken(response);
-                    setLoading(false);
-                })
-            } catch (error) {
-                console.log('ERROR RECUPERANDO OBJETO userAuthTokenObject: ', error);
-            }
+        const user = auth().currentUser;
+        const userDisplayName = JSON.stringify(user.displayName);
+        setCapitalLetter(userDisplayName.charAt(1));
+        const displayNameWithoutCommas = userDisplayName.replace(/['"]+/g, '');
+        console.log('USUARIO RECUPERADO EN SIDE BARrrr: ' + displayNameWithoutCommas);
+        setName(displayNameWithoutCommas);
+        if (userDisplayName) {
+            setLoading(false);
         }
-
-    }, [userId]);
+    }, []);
 
     // SE RENDERIZAN ELEMENTOS VISUALES
     if (loading) {
@@ -61,13 +53,10 @@ const SideBarMenuComponent = ({ navigation }) => {
                 {
                     <View style={GeneralStyles.sideBarUserInfoContainer}>
                         <View style={GeneralStyles.avatarUser}>
-                            <Text style={[GeneralStyles.circularMediumExtraLargeBlueLight, GeneralStyles.avatarText]}>{'M' + 'X'}</Text>
+                            <Text style={[GeneralStyles.circularMediumExtraLargeBlueLight, GeneralStyles.avatarText]}>{capitalLetter}</Text>
                         </View>
                         <View style={GeneralStyles.sideBarUserNameContainer}>
-                            <Text style={GeneralStyles.userNameText}>{'Usuario'}</Text>
-                            <TouchableOpacity onPress={() => navigation.navigate('EditarPerfil')}>
-                                <Text style={GeneralStyles.userNameText}>Editar perfil</Text>
-                            </TouchableOpacity>
+                            <Text style={GeneralStyles.userNameText}>{name}</Text>
                         </View>
                         <TouchableOpacity onPress={() => navigation.closeDrawer()}>
                             <Image
@@ -86,9 +75,24 @@ const SideBarMenuComponent = ({ navigation }) => {
                         </TouchableOpacity>
                     </View>
                     <View style={GeneralStyles.sideBarSection}>
+                        <TouchableOpacity onPress={() => navigation.navigate('Products')}>
+                            <Text style={GeneralStyles.sectionText}>Productos</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={GeneralStyles.sideBarSection}>
+                        <TouchableOpacity onPress={() => navigation.navigate('Services')}>
+                            <Text style={GeneralStyles.sectionText}>Servicios</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={GeneralStyles.sideBarSection}>
                         <TouchableOpacity onPress={() => {
                             // NOTA: INVOCAR ESTA LLAMADA CUANDO SE CIERRE SESION EN FIREBASE
-                            signOutContext(userToken);
+                            auth()
+                                .signOut()
+                                .then((res) => {
+                                    console.log('res de cerrar sesion: ', JSON.stringify(res));
+                                    // setLoading(true);
+                                });
                         }}>
                             <Text style={GeneralStyles.logOutText}>Cerrar sesión</Text>
                         </TouchableOpacity>

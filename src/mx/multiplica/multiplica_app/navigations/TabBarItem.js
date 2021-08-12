@@ -13,9 +13,9 @@ import PropTypes from 'prop-types';
 import Styles from '../styles/CustomTabBarStyle';
 import {
     LIGHT_BLUE,
-    BUSCAR_TAB,
     INICIO_TAB,
-    MIS_VIDEOS_TAB
+    PRODUCTOS_TAB,
+    SERVICIOS_TAB
 } from '../utilities/GlobalConstantsUtilities';
 import GeneralStyle from '../styles/GeneralStyles';
 
@@ -36,11 +36,11 @@ const TabBarItem = ({ color, tab, onPress, icon }) => {
                 tab.name !== '' && tab.name != null && tab.name != undefined
                     ? tab.name === INICIO_TAB
                         ? <Text style={[GeneralStyle.circularBoldLargeBlack, { color: color }]}>Inicio</Text>
-                        : tab.name === BUSCAR_TAB
-                            ? <Text style={[GeneralStyle.circularBoldLargeBlack, { color: color }]}>Buscar</Text>
-                            : tab.name === MIS_VIDEOS_TAB
-                                ? <Text style={[GeneralStyle.circularBoldLargeBlack, { color: color }]}>Mis videos</Text>
-                                : <Text style={[GeneralStyle.circularBoldLargeBlack, { color: color }]}>Descargas</Text>
+                        : tab.name === PRODUCTOS_TAB
+                            ? <Text style={[GeneralStyle.circularBoldLargeBlack, { color: color }]}>Productos</Text>
+                            : tab.name === SERVICIOS_TAB
+                                ? <Text style={[GeneralStyle.circularBoldLargeBlack, { color: color }]}>Servicios</Text>
+                                : null
                     : null
             }
         </TouchableOpacity>

@@ -6,10 +6,12 @@
 import * as React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {
-  INICIO_TAB
+  INICIO_TAB, PRODUCTOS_TAB, SERVICIOS_TAB
 } from '../utilities/GlobalConstantsUtilities';
 import CustomTabBarComponent from '../navigations/CustomTabBarComponent';
 import SignedUserNavigation from '../navigations/SignedUserNavigation';
+import ProductsScreen from '../screens/ProductsScreen';
+import ServicesScreen from '../screens/ServicesScreen';
 
 const TAB = createBottomTabNavigator();
 
@@ -22,6 +24,16 @@ export default function TabNavigation() {
         name={INICIO_TAB}
         component={SignedUserNavigation}
         initialParams={{ icon: require('../resources/icons/home-tabbar-icon.png') }}
+      />
+      <TAB.Screen
+        name={PRODUCTOS_TAB}
+        component={ProductsScreen}
+        initialParams={{ icon: require('../resources/icons/products-tabbar-icon.png') }}
+      />
+      <TAB.Screen
+        name={SERVICIOS_TAB}
+        component={ServicesScreen}
+        initialParams={{ icon: require('../resources/icons/services-tabbar-icon.png') }}
       />
     </TAB.Navigator>
   );

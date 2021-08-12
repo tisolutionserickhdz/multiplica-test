@@ -26,7 +26,7 @@ const CustomTabBarComponent = ({ state, navigation }) => {
 
     const handlePress = (activeTab, index) => {
         if (state.index !== index) {
-            console.log(activeTab);
+            console.log('activeTab: ', activeTab);
             setSelected(activeTab);
             navigation.navigate(activeTab);
         }

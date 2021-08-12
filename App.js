@@ -3,8 +3,17 @@
  * @author Erick Hernandez <ti.solutions.erick.hdz@gmail.com>
  * @version 1.0 - 08/08/2021
  */
-import React, { useState, useEffect, useMemo, useReducer } from 'react';
-import { View, LogBox, Alert, Platform, Text } from 'react-native';
+import React,
+{
+  useState,
+  useEffect,
+  useMemo,
+  useReducer
+} from 'react';
+import {
+  View,
+  LogBox
+} from 'react-native';
 import GeneralStyles from './src/mx/multiplica/multiplica_app/styles/GeneralStyles';
 import { AuthContext } from './src/mx/multiplica/multiplica_app/components/GlobalContextComponent';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -14,6 +23,18 @@ import UnsignedUserNavigation from './src/mx/multiplica/multiplica_app/navigatio
 import DrawerNavigation from './src/mx/multiplica/multiplica_app/navigations/DrawerNavigation';
 import { RED_PRINCIPAL } from './src/mx/multiplica/multiplica_app/utilities/GlobalConstantsUtilities';
 import StatusBarComponent from './src/mx/multiplica/multiplica_app/components/StatusBarComponent';
+import auth from '@react-native-firebase/auth';
+
+// IGNORA ALERTAS ESPECIFICAS
+LogBox.ignoreLogs([
+  'Warning:',
+  'Require cycles are allowed',
+  'Require',
+  'VirtualizedLists',
+  'Task orphaned',
+  'Sending',
+  'Found screens'
+]);
 
 /**
  * @description Constante principal de archivo App
@@ -26,6 +47,20 @@ const App = () => {
   // HOOKS
   const [loadingApp, setLoadingApp] = useState(true);
   const [tokenStored, setTokenStored] = useState('');
+
+  // ESTABLECE UN ESTADO DE INICIALIZACIÓN MIENTRAS FIREBASE SE CONECTA
+  const [initializing, setInitializing] = useState(true);
+  const [user, setUser] = useState();
+
+  /**
+   * @description Funcion que se ejecuta existe un cambio en la autenticacion de firebase
+   * @author Erick Hernandez <ti.solutions.erick.hdz@gmail.com>
+   * @version 1.0 - 08/08/2021
+   */
+  async function onAuthStateChanged(usuario) {
+    setUser(usuario);
+    if (initializing) setInitializing(false);
+  }
 
   // INICIALIZACION DE ESTADO DE VALORES PARA CONTEXT
   const initialLoginState = {
@@ -116,7 +151,11 @@ const App = () => {
     setTimeout(() => {
       setLoadingApp(false);
     }, 3000);
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber;
   }, []);
+
+  if (initializing) return null;
 
   if (loadingApp) {
     return (
@@ -135,10 +174,10 @@ const App = () => {
             hidden={false}
           />
           {
-            loginState.userToken == null ?
-              <UnsignedUserNavigation />
-              :
+            user ?
               <DrawerNavigation />
+              :
+              <UnsignedUserNavigation />
           }
         </NavigationContainer>
       </AuthContext.Provider>

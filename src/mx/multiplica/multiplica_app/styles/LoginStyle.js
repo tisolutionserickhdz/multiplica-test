@@ -16,7 +16,8 @@ import {
     GENERAL_BORDER_RADIUS,
     BLACK_TEXT,
     GREY_TEXT,
-    GREY_BUTTONS
+    GREY_BUTTONS,
+    RED_PRINCIPAL_WITH_OPACITY
 } from "../utilities/GlobalConstantsUtilities";
 
 export default {
@@ -43,6 +44,15 @@ export default {
         height: sdh(10),
         width: sdw(80),
         backgroundColor: RED_PRINCIPAL,
+        borderRadius: GENERAL_BORDER_RADIUS,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: sdh(1)
+    },
+    buttonStyleDisabled: {
+        backgroundColor: RED_PRINCIPAL_WITH_OPACITY,
+        height: sdh(10),
+        width: sdw(80),
         borderRadius: GENERAL_BORDER_RADIUS,
         justifyContent: 'center',
         alignItems: 'center',

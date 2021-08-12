@@ -3,15 +3,15 @@
  * @author Erick Hernandez <ti.solutions.erick.hdz@gmail.com>
  * @version 1.0 - 08/08/2021
  */
-import React, { useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     View,
-    Text,
-    Keyboard
+    Text
 } from 'react-native';
 import PropTypes from 'prop-types';
 import GeneralStyles from '../styles/GeneralStyles';
-import { AuthContext } from '../components/GlobalContextComponent';
+import auth from '@react-native-firebase/auth';
+import LoaderIndicatorComponent from '../components/LoaderIndicatorComponent';
 
 /**
  * @description Constante principal de HomeScreen
@@ -22,50 +22,29 @@ import { AuthContext } from '../components/GlobalContextComponent';
 const HomeScreen = ({ navigation }) => {
 
     // CONSTANTES Y HOOKS
-    const [emailInputValue, setEmailInputValue] = useState('');
-    const [recoveryEmailInputValue, setRecoveryEmailInputValue] = useState('');
-    const [passwordInputValue, setPasswordInputValue] = useState('');
-    const [loginButtonDisabled, setLoginButtonDisabled] = useState(true);
-    const [sendButtonDisabled, setSendButtonDisabled] = useState(true);
-    const [isLoginForm, setIsLoginForm] = useState(true);
-    const [isRecoveryPasswordForm, setIsRecoveryPasswordForm] = useState(false);
+    const [loading, setLoading] = useState(true)
 
-    // CONTEXT PARA MANEJO DE SESION DEL USUARIO
-    const { signInContext } = useContext(AuthContext);
+    useEffect(() => {
+        const user = auth().currentUser;
+        console.log('USUARIO RECUPERADO EN HOME: ' + JSON.stringify(user.displayName));
 
-
-    /**
-     * @description Funcion para iniciar sesión
-     * @author Erick Hernandez <ti.solutions.erick.hdz@gmail.com>
-     * @version 1.0 - 08/08/2021
-     */
-    const loginFunction = async (username, password) => {
-        // console.log('ENTRA A MUTATION functionLoginUser con username: ', username, ' y password: ', password);
-        Keyboard.dismiss();
-
-        //  NOTA: INVOCAR ESTE LLAMADO CUANDO SE HAGA INICIO DE SESION CON FIREBASE
-        // signInContext(username, password, accessToken, userId);
-
-
-    }
-
-    /**
-     * @description Funcion para recuperar contraseña
-     * @author Erick Hernandez <ti.solutions.erick.hdz@gmail.com>
-     * @version 1.0 - 08/08/2021
-     */
-    const recoveryPasswordFunction = async (email) => {
-        console.log('ENTRA A recoveryPasswordFunction');
-    }
-
-
+        if (JSON.stringify(user.displayName)) {
+            setLoading(false);
+        }
+    }, []);
 
     // SE RENDERIZAN ELEMENTOS VISUALES
-    return (
-        <View style={GeneralStyles.mainContainer}>
-            <Text>HOME SCREEN</Text>
-        </View>
-    );
+    if (loading) {
+        return (
+            <LoaderIndicatorComponent />
+        );
+    } else {
+        return (
+            <View style={GeneralStyles.mainContainer}>
+                <Text>HOME SCREEN</Text>
+            </View>
+        );
+    }
 }
 
 // SE ESPECIFICAN LOS VALORES DE LAS PROPS
