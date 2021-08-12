@@ -22,7 +22,7 @@ import LoaderIndicatorComponent from '../components/LoaderIndicatorComponent';
 const HomeScreen = ({ navigation }) => {
 
     // CONSTANTES Y HOOKS
-    const [loading, setLoading] = useState(true)
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const user = auth().currentUser;

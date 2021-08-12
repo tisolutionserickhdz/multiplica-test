@@ -40,7 +40,7 @@ const LoginScreen = ({ navigation }) => {
      * @version 1.0 - 08/08/2021
      */
     const loginUser = () => {
-        console.log('--- registerAnUser ---');
+        console.log('--- loginUser ---');
         setLoading(true);
         auth()
             .signInWithEmailAndPassword(emailInputValue.trim(), passwordInputValue)

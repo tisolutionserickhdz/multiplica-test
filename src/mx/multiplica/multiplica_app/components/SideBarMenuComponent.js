@@ -24,16 +24,18 @@ const SideBarMenuComponent = ({ navigation }) => {
 
     // CONSTANTES Y HOOKS
     const [loading, setLoading] = useState(true);
-    const [name, setName] = useState('MX');
+    const [name, setName] = useState('Usuario');
+    const [email, setEmail] = useState('usuario@example.com');
     const [capitalLetter, setCapitalLetter] = useState('MX');
 
     useEffect(() => {
         const user = auth().currentUser;
         const userDisplayName = JSON.stringify(user.displayName);
+        const userEmail = JSON.stringify(user.email);
+        console.log('USUARIO RECUPERADO EN SIDE BAR: ' + userEmail);
         setCapitalLetter(userDisplayName.charAt(1));
-        const displayNameWithoutCommas = userDisplayName.replace(/['"]+/g, '');
-        console.log('USUARIO RECUPERADO EN SIDE BARrrr: ' + displayNameWithoutCommas);
-        setName(displayNameWithoutCommas);
+        setName(userDisplayName.replace(/['"]+/g, ''));
+        setEmail(userEmail.replace(/['"]+/g, ''));
         if (userDisplayName) {
             setLoading(false);
         }
@@ -57,6 +59,7 @@ const SideBarMenuComponent = ({ navigation }) => {
                         </View>
                         <View style={GeneralStyles.sideBarUserNameContainer}>
                             <Text style={GeneralStyles.userNameText}>{name}</Text>
+                            <Text style={GeneralStyles.userEmailText}>{email}</Text>
                         </View>
                         <TouchableOpacity onPress={() => navigation.closeDrawer()}>
                             <Image
@@ -69,11 +72,6 @@ const SideBarMenuComponent = ({ navigation }) => {
                 }
 
                 <View style={GeneralStyles.sideBarSectionsContainer}>
-                    <View style={GeneralStyles.sideBarSection}>
-                        <TouchableOpacity onPress={() => navigation.navigate('Inicio')}>
-                            <Text style={GeneralStyles.sectionText}>Inicio</Text>
-                        </TouchableOpacity>
-                    </View>
                     <View style={GeneralStyles.sideBarSection}>
                         <TouchableOpacity onPress={() => navigation.navigate('Products')}>
                             <Text style={GeneralStyles.sectionText}>Productos</Text>

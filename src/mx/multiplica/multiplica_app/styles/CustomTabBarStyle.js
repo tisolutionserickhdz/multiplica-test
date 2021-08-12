@@ -14,8 +14,8 @@ import {
 import {
     BACKGROUND_BLUE,
     GREY_BUTTONS,
-    LIGHT_BLUE,
-    PURE_WHITE
+    PURE_WHITE,
+    RED_PRINCIPAL
 } from "../utilities/GlobalConstantsUtilities";
 
 export default {
@@ -41,7 +41,7 @@ export default {
     iconTabbarPressed: {
         width: sdw(6),
         height: sdh(6),
-        tintColor: LIGHT_BLUE
+        tintColor: RED_PRINCIPAL
     },
     iconTabbar: {
         width: sdw(4),

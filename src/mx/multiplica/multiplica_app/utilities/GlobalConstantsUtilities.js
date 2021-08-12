@@ -37,6 +37,34 @@ const SERVICIOS_TAB = 'Services';
 // BORDER RADIUS GENERAL
 const GENERAL_BORDER_RADIUS = 8;
 
+// ARREGLO DE PRODUCTOS Y SERVICIOS
+const PRODUCTS_ARRAY = [
+    {
+        id: 1,
+        title: 'Estrategia',
+        image: require('../resources/icons/slider-1-icon.png'),
+        description: 'Decisiones estratégicas más acertadas con prioridades digitales claras'
+    },
+    {
+        id: 2,
+        title: 'Experiencias',
+        image: require('../resources/icons/slider-2-icon.png'),
+        description: 'Experiencias digitales más relevantes, persuasivas e inteligentes'
+    },
+    {
+        id: 1,
+        title: 'Conversiones',
+        image: require('../resources/icons/slider-3-icon.png'),
+        description: 'Más conversiones, ventas e ingresos seduciendo al cliente en todo su journey'
+    },
+    {
+        id: 1,
+        title: 'Automatización',
+        image: require('../resources/icons/slider-4-icon.png'),
+        description: 'Optimización y automatización de journeys para impactar el ciclo de vida del cliente'
+    },
+]
+
 // GRUPO DE CONSTANTES
 const GLOBAL_CONSTANTS = {
     RED_PRINCIPAL,
@@ -44,7 +72,7 @@ const GLOBAL_CONSTANTS = {
     GENERAL_BORDER_RADIUS,
     PRODUCTOS_TAB,
     SERVICIOS_TAB,
-
+    PRODUCTS_ARRAY,
     BLUE_TEXT,
     LIGHT_BLUE,
     BLUE_MAIN_GRADIENT_TOP,

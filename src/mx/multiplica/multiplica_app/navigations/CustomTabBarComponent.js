@@ -11,9 +11,9 @@ import PropTypes from 'prop-types';
 import Styles from '../styles/CustomTabBarStyle';
 import TabBarItem from './TabBarItem';
 import {
-    LIGHT_BLUE,
     BACKGROUND_BLUE,
-    INICIO_TAB
+    INICIO_TAB,
+    RED_PRINCIPAL
 } from '../utilities/GlobalConstantsUtilities';
 
 const CustomTabBarComponent = ({ state, navigation }) => {
@@ -21,7 +21,7 @@ const CustomTabBarComponent = ({ state, navigation }) => {
     const { routes } = state;
     const [selected, setSelected] = useState(INICIO_TAB);
 
-    const renderColor = (currentTab) => currentTab === selected ? LIGHT_BLUE : BACKGROUND_BLUE;
+    const renderColor = (currentTab) => currentTab === selected ? RED_PRINCIPAL : BACKGROUND_BLUE;
     const renderSize = (currentTab) => currentTab === selected ? 30 : 20;
 
     const handlePress = (activeTab, index) => {
